@@ -42,16 +42,6 @@ summary(df_selecionado2)
 
 describe(df_selecionado)
 
-#> describe(df_selecionado)
-#vars   n     mean       sd   median  trimmed      mad    min      max    range skew kurtosis     se
-#IDADE                  1 335    42.84     9.98    42.00    42.17    10.38   25.0     79.0     54.0 0.63     0.35   0.55
-#TOTAL_DEPENDENTES      2 335     0.83     1.26     0.00     0.60     0.00    0.0      6.0      6.0 1.42     1.17   0.07
-#TEMPO_DE_CASA          3 335     8.51     5.70     8.00     8.38     5.93    0.0     23.0     23.0 0.27    -1.04   0.31
-#SALARIO_MENSAL         4 335 19451.71 11313.97 17804.05 18709.65 12903.59 3259.9  71740.1  68480.2 0.76     0.94 618.15
-#TOTAL_MINUTOS          5 335 13913.59 18089.77  9596.00 10465.91  9623.56    0.0 149134.0 149134.0 3.67    18.49 988.35
-#CONJUGE_COMPANHEIRO    6 335     0.32     0.47     0.00     0.28     0.00    0.0      1.0      1.0 0.77    -1.41   0.03
-
-
 # Carregar pacotes necessários
 library(ggplot2)
 library(gridExtra)
@@ -97,8 +87,6 @@ grid.arrange(boxplot_idade, boxplot_total_dependentes, boxplot_tempo_de_casa,
 
 # Análise de Correlação
 
-
-
 # Calcular a matriz de correlação
 cor_matrix <- cor(df_selecionado, use = "complete.obs")
 
@@ -123,23 +111,6 @@ ggplot(data = cor_matrix_melt, aes(Var1, Var2, fill = value)) +
   geom_text(aes(label = sprintf("%.2f", value)), color = "black", size = 3)
 
 
-# Exibindo a matriz de correlação
-print(cor_matrix)
-
-
-#                       IDADE     TOTAL_DEPENDENTES TEMPO_DE_CASA SALARIO_MENSAL TOTAL_MINUTOS CONJUGE_COMPANHEIRO
-#IDADE               1.00000000        0.12114406     0.4128034     0.46625954    0.01054697          0.09245702
-#TOTAL_DEPENDENTES   0.12114406        1.00000000     0.2820533     0.07537511    0.16110528          0.79089789
-#TEMPO_DE_CASA       0.41280336        0.28205326     1.0000000     0.39700208    0.16622984          0.27590323
-#SALARIO_MENSAL      0.46625954        0.07537511     0.3970021     1.00000000   -0.18167551          0.04939555
-#TOTAL_MINUTOS       0.01054697        0.16110528     0.1662298    -0.18167551    1.00000000          0.13826186
-#CONJUGE_COMPANHEIRO 0.09245702        0.79089789     0.2759032     0.04939555    0.13826186          1.00000000
-
-#Percebe-se que as variáveis Conjuge e Total de Dependentes tem maior correlação, com índice de correlação de pearson  aproximado de 0.79. 
-#Salário e Idade fica em segunda posição com Índice de 0.47, seguido de Idade e Tempo de Casa, com Índice de 0.41. 
-#As demais variáveis não apresentam índice relevante.
-
-
 ###################################################################################################################
 
 #Análise Univariada
@@ -159,23 +130,6 @@ shapiro_test <- shapiro.test(idade)
 
 # Exibir o resultado do teste
 print(shapiro_test)
-
-#Shapiro-Wilk normality test
-
-#data:  idade
-#W = 0.9674, p-value = 7.75e-07
-
-#Análise do Resultado: Valor de W (0.9674)
-
-#O valor de W é uma estatística que mede a normalidade. Valores de W mais próximos de 1 indicam que os dados são mais próximos de uma distribuição normal.
-
-#p-value (7.75e-07):   O valor p é muito pequeno (menor que 0.05, que é um nível de significância comum). Neste caso, o valor p é 7.75e-07, o que é muito menor que 0.05.
-
-#Conclusão:
-#Hipótese Nula: A hipótese nula do teste de Shapiro-Wilk é que a amostra segue uma distribuição normal.
-#Resultado: Dado que o valor p é muito menor que 0.05, rejeitamos a hipótese nula.
-#Interpretação: Há evidências estatisticamente significativas para concluir que a distribuição da idade não é normal.
-
 
 # Visualizações
 
@@ -401,11 +355,6 @@ print(combined_plot4)
 #print(shapiro_test_6)
 
 
-#		Shapiro-Wilk normality test
-
-#data:  salario
-#W = 0.92253, p-value = 3.767e-12
-
 #ggplot(BD_APEX_SUM, aes(x = TOTAL_MINUTOS)) + 
 # geom_histogram(binwidth = 1, fill = brewer.pal(n = 3, name = "Pastel1")[2]) +
 #  theme_minimal() +
@@ -623,17 +572,6 @@ if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
   print(tukey_result)
 }
 
-#Graus de liberdade (Df): Existem 1 grau de liberdade para GENERO e 333 para os resíduos.
-#Soma dos quadrados (Sum Sq): A soma dos quadrados entre os grupos (GENERO) é 3.459e+09 e a soma dos quadrados dentro dos grupos (resíduos) é 1.058e+11.
-#Quadrado médio (Mean Sq): O quadrado médio entre os grupos é 3.459e+09 e o quadrado médio dentro dos grupos é 3.178e+08.
-#Valor F (F value): O valor F é 10.88, indicando uma variabilidade significativa entre os grupos comparada à variabilidade dentro dos grupos.
-#p-valor (Pr(>F)): O p-valor é 0.00107, indicando que a diferença na média de TOTAL_MINUTOS entre os gêneros é estatisticamente significativa ao nível de significância de 0.01.
-
-
-#Diferença (diff): A diferença média entre F e M é de 6442.161 minutos, com F tendo uma média maior de TOTAL_MINUTOS em comparação com M.
-#Limite Inferior (lwr): O limite inferior do intervalo de confiança de 95% é 2600.994 minutos.
-#Limite Superior (upr): O limite superior do intervalo de confiança de 95% é 10283.33 minutos.
-#p-valor ajustado (p adj): O p-valor ajustado é 0.0010748, indicando que a diferença na média de TOTAL_MINUTOS entre F e M é estatisticamente significativa.
 #######################################################################################################
 # Análise Bivariada Faixa Etária e Total de Minutos
 
@@ -676,12 +614,6 @@ if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
   tukey_result <- TukeyHSD(anova_result)
   print(tukey_result)
 }
-
-#Graus de liberdade (Df): Existem 5 graus de liberdade para FAIXA_ETARIA e 329 para os resíduos.
-#Soma dos quadrados (Sum Sq): A soma dos quadrados entre os grupos é 2.324e+09 e a soma dos quadrados dentro dos grupos (resíduos) é 1.070e+11.
-#Quadrado médio (Mean Sq): O quadrado médio entre os grupos é 464804915 e o quadrado médio dentro dos grupos é 325149182.
-#Valor F (F value): O valor F é 1.43, o que indica a razão da variabilidade entre os grupos pela variabilidade dentro dos grupos.
-#p-valor (Pr(>F)): O p-valor é 0.213, indicando que não há evidência suficiente para rejeitar a hipótese nula de que as médias de TOTAL_MINUTOS são iguais entre as diferentes faixas etárias.
 
 #######################################################################################################
 # Análise Bivariada Faixa Salários e Total de Minutos
@@ -742,49 +674,7 @@ if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
   print(tukey_result)
 }
 
-#Graus de liberdade (Df): Existem 4 graus de liberdade para FAIXAS_SALARIOS e 330 para os resíduos.
-#Soma dos quadrados (Sum Sq): A soma dos quadrados entre os grupos (FAIXAS_SALARIOS) é 4.600e+09 e a soma dos quadrados dentro dos grupos (resíduos) é 1.047e+11.
-#Quadrado médio (Mean Sq): O quadrado médio entre os grupos é 1.150e+09 e o quadrado médio dentro dos grupos é 3.173e+08.
-#Valor F (F value): O valor F é 3.625, indicando uma variabilidade significativa entre os grupos comparada à variabilidade dentro dos grupos.
-#p-valor (Pr(>F)): O p-valor é 0.00659, indicando que a diferença na média de TOTAL_MINUTOS entre as faixas salariais é estatisticamente significativa ao nível de significância de 0.01.
 
-
-#Tukey multiple comparisons of means
-#95% family-wise confidence level
-
-#Fit: aov(formula = TOTAL_MINUTOS ~ FAIXAS_SALARIOS, data = BD_APEX_SUM)
-
-#$FAIXAS_SALARIOS
-#diff        lwr        upr     p adj
-#Low-Medium-Low          -8711.4776 -17152.656  -270.2997 0.0392876
-#Medium-Low              -5954.9851 -14396.163  2486.1929 0.3008535
-#Medium-High-Low         -6135.3582 -14576.536  2305.8197 0.2713405
-#High-Low               -11099.9254 -19541.103 -2658.7474 0.0032742
-#Medium-Low-Medium        2756.4925  -5684.685 11197.6705 0.8983754
-#Medium-High-Low-Medium   2576.1194  -5865.059 11017.2974 0.9188921
-#High-Low-Medium         -2388.4478 -10829.626  6052.7302 0.9373633
-#Medium-High-Medium       -180.3731  -8621.551  8260.8048 0.9999973
-#High-Medium             -5144.9403 -13586.118  3296.2377 0.4528644
-#High-Medium-High        -4964.5672 -13405.745  3476.6108 0.4899663
-
-#Interpretação dos Resultados:
-# Low-Medium vs. Low:
-
-#  Diferença (diff): -8711.4776 minutos
-#Limite Inferior (lwr): -17152.656 minutos
-#Limite Superior (upr): -270.2997 minutos
-#p-valor ajustado (p adj): 0.0392876
-#Interpretação: A diferença média de TOTAL_MINUTOS entre as faixas salariais "Low-Medium" e "Low" é significativa, com a faixa "Low-Medium" tendo uma média menor de minutos em comparação com a faixa "Low".
-#High vs. Low:
-
-#  Diferença (diff): -11099.9254 minutos
-#Limite Inferior (lwr): -19541.103 minutos
-#Limite Superior (upr): -2658.7474 minutos
-#p-valor ajustado (p adj): 0.0032742
-#Interpretação: A diferença média de TOTAL_MINUTOS entre as faixas salariais "High" e "Low" é significativa, com a faixa "High" tendo uma média menor de minutos em comparação com a faixa "Low".
-#Outras Comparações:
-
-#  As outras comparações não mostraram diferenças significativas, com p-valores ajustados muito maiores que 0.05.
 
 #######################################################################################################
 # Outras Análises
@@ -826,66 +716,6 @@ ggplot(BD_APEX_SUM, aes(x = IDADE, y = TOTAL_MINUTOS)) +
 model <- lm(TOTAL_MINUTOS ~ IDADE + FAIXAS_SALARIOS + GENERO, data = BD_APEX_SUM)
 summary(model)
 
-#Analise Call:
-# lm(formula = TOTAL_MINUTOS ~ IDADE + FAIXAS_SALARIOS + GENERO, 
-#   data = BD_APEX_SUM)
-
-#Residuals:
-#  Min     1Q Median     3Q    Max 
-#-19743  -8459  -3752   2964 137279 
-
-#Coefficients:
-#  Estimate Std. Error t value Pr(>|t|)    
-#(Intercept)                  9119.2     4861.5   1.876 0.061573 .  
-#IDADE                         211.6      111.7   1.894 0.059061 .  
-#FAIXAS_SALARIOSLow-Medium   -8005.8     3030.9  -2.641 0.008651 ** 
-#  FAIXAS_SALARIOSMedium       -7017.8     3118.8  -2.250 0.025101 *  
-#  FAIXAS_SALARIOSMedium-High  -7644.7     3127.2  -2.445 0.015028 *  
-#  FAIXAS_SALARIOSHigh        -13629.0     3367.9  -4.047 6.48e-05 ***
-#  GENEROF                      6421.5     1929.0   3.329 0.000971 ***
-#  ---
-#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-#Residual standard error: 17500 on 328 degrees of freedom
-#Multiple R-squared:  0.08067,	Adjusted R-squared:  0.06386 
-#F-statistic: 4.797 on 6 and 328 DF,  p-value: 0.0001044
-
-#Coeficientes:
-#Intercepto (Intercept): 9119.2
-
-#Este é o valor médio de TOTAL_MINUTOS quando todas as variáveis independentes são iguais a zero.
-#IDADE: 211.6
-
-#A cada aumento de um ano na idade, espera-se um aumento de 211.6 minutos em TOTAL_MINUTOS, mantendo todas as outras variáveis constantes. Este coeficiente é marginalmente significativo com um valor p de 0.059.
-#FAIXAS_SALARIOS (Referência: Low):
-
-#  Low-Medium: -8005.8
-#Em comparação com a faixa salarial "Low", espera-se que a faixa "Low-Medium" tenha, em média, 8005.8 minutos a menos em TOTAL_MINUTOS.
-#Medium: -7017.8
-#Em comparação com a faixa salarial "Low", espera-se que a faixa "Medium" tenha, em média, 7017.8 minutos a menos em TOTAL_MINUTOS.
-#Medium-High: -7644.7
-#Em comparação com a faixa salarial "Low", espera-se que a faixa "Medium-High" tenha, em média, 7644.7 minutos a menos em TOTAL_MINUTOS.
-#High: -13629.0
-#Em comparação com a faixa salarial "Low", espera-se que a faixa "High" tenha, em média, 13629.0 minutos a menos em TOTAL_MINUTOS.
-#GENERO (Referência: M):
-
-#  F: 6421.5
-#Em comparação com o gênero masculino, espera-se que o gênero feminino tenha, em média, 6421.5 minutos a mais em TOTAL_MINUTOS.
-#Significância dos Coeficientes:
-#  Intercepto e IDADE têm valores p próximos a 0.05, indicando significância marginal.
-#FAIXAS_SALARIOS:
-#  As faixas "Low-Medium", "Medium", "Medium-High" e "High" são significativamente diferentes da faixa "Low", com p-valores menores que 0.05.
-#GENERO:
-#  O gênero feminino é significativamente diferente do masculino com um p-valor menor que 0.001.
-#Estatísticas do Modelo:
-#  Residual standard error: 17500
-#Mede a variabilidade dos resíduos.
-#Multiple R-squared: 0.08067
-#Indica que aproximadamente 8.1% da variação em TOTAL_MINUTOS é explicada pelas variáveis independentes no modelo.
-#Adjusted R-squared: 0.06386
-#Ajusta o R-squared para o número de variáveis no modelo.
-#F-statistic: 4.797
-#Testa a significância global do modelo, com um p-valor de 0.0001044 indicando que o modelo é significativamente melhor do que um modelo sem preditores.
 
 # Normalidade dos Resíduos
 qqPlot(model, main="Q-Q Plot")
@@ -919,28 +749,6 @@ title("Resíduos vs Valores Ajustados")
 # Multicolinearidade
 vif(model)
 
-#Analise                     GVIF Df GVIF^(1/(2*Df))
-#IDADE           1.354820  1        1.163967
-#FAIXAS_SALARIOS 1.358170  4        1.039009
-#GENERO          1.012488  1        1.006224
-
-
-#Interpretação dos Valores GVIF
-#Coeficientes de GVIF:
-#  IDADE: 1.354820
-#GVIF^(1/(2*Df)): 1.163967
-#FAIXAS_SALARIOS: 1.358170
-#GVIF^(1/(2*Df)): 1.039009
-#GENERO: 1.012488
-#GVIF^(1/(2*Df)): 1.006224
-#Análise dos Valores:
-#  IDADE: GVIF^(1/(2*Df)) = 1.164
-#FAIXAS_SALARIOS: GVIF^(1/(2*Df)) = 1.039
-#GENERO: GVIF^(1/(2*Df)) = 1.006
-#Interpretação dos Resultados:
-#  Valores de GVIF^(1/(2*Df)) inferiores a 2 geralmente indicam que não há problemas significativos de multicolinearidade.
-#Todos os valores de GVIF^(1/(2*Df)) estão abaixo de 2, indicando que a multicolinearidade não é um problema significativo para este modelo.
-
 #######################################################################################################################
 # Instalar e carregar pacotes necessários
 library(car)
@@ -958,68 +766,7 @@ model_interaction <- lm(TOTAL_MINUTOS ~ IDADE * FAIXAS_SALARIOS + GENERO, data =
 summary(model_interaction)
 
 
-#Call:
-#  lm(formula = TOTAL_MINUTOS ~ IDADE * FAIXAS_SALARIOS + GENERO, 
-#     data = BD_APEX_SUM)
 
-#Residuals:
-#  Min     1Q Median     3Q    Max 
-#-23084  -8298  -3980   3129 135994 
-
-#Coefficients:
-#  Estimate Std. Error t value Pr(>|t|)   
-#(Intercept)                        4629.92    9394.46   0.493  0.62246   
-#IDADE                               332.53     244.15   1.362  0.17415   
-#FAIXAS_SALARIOSLow-Medium         -4502.05   13975.09  -0.322  0.74755   
-#FAIXAS_SALARIOSMedium              -151.55   14978.31  -0.010  0.99193   
-#FAIXAS_SALARIOSMedium-High       -16258.79   14577.67  -1.115  0.26554   
-#FAIXAS_SALARIOSHigh                8906.19   15246.32   0.584  0.55952   
-#GENEROF                            6348.04    1945.17   3.263  0.00122 **
-#  IDADE:FAIXAS_SALARIOSLow-Medium     -93.73     365.54  -0.256  0.79780   
-#IDADE:FAIXAS_SALARIOSMedium        -173.94     356.37  -0.488  0.62581   
-#IDADE:FAIXAS_SALARIOSMedium-High    173.98     346.56   0.502  0.61600   
-#IDADE:FAIXAS_SALARIOSHigh          -476.02     337.87  -1.409  0.15983   
-#---
-#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-#Residual standard error: 17500 on 324 degrees of freedom
-#Multiple R-squared:  0.0922,	Adjusted R-squared:  0.06418 
-#F-statistic:  3.29 on 10 and 324 DF,  p-value: 0.0004455
-
-
-#O modelo de regressão linear ajustado inclui interações entre IDADE e FAIXAS_SALARIOS, além de GENERO. Vamos interpretar os resultados detalhadamente.
-
-#Resíduos:
-#  Min: -23084
-#1Q: -8298
-#Mediana: -3980
-#3Q: 3129
-#Max: 135994
-#Coeficientes:
-#  Intercepto: 4629.92 (não significativo)
-#IDADE: 332.53 (não significativo)
-#FAIXAS_SALARIOS:
-#  Low-Medium: -4502.05 (não significativo)
-#Medium: -151.55 (não significativo)
-#Medium-High: -16258.79 (não significativo)
-#High: 8906.19 (não significativo)
-#GENERO (F): 6348.04 (significativo ao nível de 0.01)
-#Interações (IDADE
-#):
-#  Low-Medium: -93.73 (não significativo)
-#Medium: -173.94 (não significativo)
-#Medium-High: 173.98 (não significativo)
-#High: -476.02 (não significativo)
-#Estatísticas do Modelo:
-#  Residual standard error: 17500
-#Multiple R-squared: 0.0922
-#Adjusted R-squared: 0.06418
-#F-statistic: 3.29 (p-valor: 0.0004455)
-#Interpretação:
-#  Intercepto e coeficientes individuais (exceto GENERO (F)) não são significativos. Isso sugere que, individualmente, IDADE e FAIXAS_SALARIOS (e suas interações) não têm uma relação estatisticamente significativa com TOTAL_MINUTOS.
-#GENERO (F) é significativo, indicando que o gênero feminino tem, em média, 6348.04 minutos a mais em TOTAL_MINUTOS comparado ao masculino.
-#A interação entre IDADE e FAIXAS_SALARIOS não é significativa, sugerindo que a influência da idade em TOTAL_MINUTOS não varia significativamente entre as diferentes faixas salariais.
-#Multiple R-squared de 0.0922 indica que aproximadamente 9.2% da variabilidade em TOTAL_MINUTOS é explicada pelo modelo, que é relativamente baixo.
 
 # Verificar se o data frame está carregado corretamente
 str(BD_APEX_SUM)
@@ -1037,60 +784,6 @@ model_log <- lm(LOG_TOTAL_MINUTOS ~ IDADE + FAIXAS_SALARIOS + GENERO, data = BD_
 summary(model_log)
 
 
-#Call:
-#  lm(formula = LOG_TOTAL_MINUTOS ~ IDADE + FAIXAS_SALARIOS + GENERO, 
-#     data = BD_APEX_SUM)
-
-#Residuals:
-#  Min      1Q  Median      3Q     Max 
-#-9.1180 -0.5028  0.3594  1.2438  4.6597 
-
-#Coefficients:
-#  Estimate Std. Error t value Pr(>|t|)    
-#(Intercept)                 9.219458   0.645554  14.281  < 2e-16 ***
-#  IDADE                      -0.002273   0.014830  -0.153 0.878256    
-#FAIXAS_SALARIOSLow-Medium  -0.634239   0.402464  -1.576 0.116016    
-#FAIXAS_SALARIOSMedium      -0.212922   0.414141  -0.514 0.607509    
-#FAIXAS_SALARIOSMedium-High -1.412850   0.415258  -3.402 0.000751 ***
-#  FAIXAS_SALARIOSHigh        -2.499361   0.447217  -5.589 4.82e-08 ***
-#  GENEROF                     0.639671   0.256150   2.497 0.013006 *  
-#  ---
-#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-#Residual standard error: 2.324 on 328 degrees of freedom
-#Multiple R-squared:  0.1523,	Adjusted R-squared:  0.1368 
-#F-statistic: 9.823 on 6 and 328 DF,  p-value: 5.768e-10
-
-#Interpretação dos Resultados:
-#  Resíduos:
-#  Min: -9.1180
-#  1Q: -0.5028
-#  Mediana: 0.3594
-#  3Q: 1.2438
-#  Max: 4.6597
-#  Coeficientes:
-#    Intercepto: 9.219458 (muito significativo, p < 2e-16)
-#  IDADE: -0.002273 (não significativo, p = 0.878256)
-#  FAIXAS_SALARIOS:
-#    Low-Medium: -0.634239 (marginalmente significativo, p = 0.116016)
-#  Medium: -0.212922 (não significativo, p = 0.607509)
-#  Medium-High: -1.412850 (muito significativo, p = 0.000751)
-#  High: -2.499361 (muito significativo, p = 4.82e-08)
-#  GENERO (F): 0.639671 (significativo, p = 0.013006)
-#  Estatísticas do Modelo:
-#   Residual standard error: 2.324
-#  Multiple R-squared: 0.1523
-#  Adjusted R-squared: 0.1368
-#  F-statistic: 9.823 (p-valor: 5.768e-10)
-#  Interpretação:
-#    Intercepto é muito significativo, indicando que o valor médio de LOG_TOTAL_MINUTOS quando todas as outras variáveis são zero é 9.219458.
-#  IDADE não é significativa, sugerindo que não há uma relação estatisticamente significativa entre IDADE e LOG_TOTAL_MINUTOS.
-#  FAIXAS_SALARIOS:
-#    Faixas salariais "Medium-High" e "High" são significativamente diferentes da faixa salarial "Low", com efeitos negativos significativos no LOG_TOTAL_MINUTOS.
-#  Faixa salarial "Low-Medium" é marginalmente significativa.
-#  Faixa salarial "Medium" não é significativa.
-# GENERO (F) é significativo, indicando que mulheres têm, em média, um valor de LOG_TOTAL_MINUTOS maior em comparação aos homens.
-
 # Normalidade dos Resíduos
 qqPlot(model_log, main="Q-Q Plot")
 
@@ -1102,14 +795,6 @@ title("Resíduos vs Valores Ajustados")
 # Multicolinearidade
 vif(model_log)
 
-
-#Conclusão:
-#  Coeficientes Significativos:
-#  FAIXAS_SALARIOS (Medium-High e High) e GENERO (F) são variáveis significativas.
-#Modelo Explicativo:
-#  O modelo explica aproximadamente 15.23% da variação em LOG_TOTAL_MINUTOS (Multiple R-squared).
-#Assunções do Modelo:
-#  Verificar a normalidade dos resíduos e a homoscedasticidade para garantir que as assunções do modelo são atendidas.
 
 ######################################################################################################################
 
@@ -1138,35 +823,6 @@ model_cv <- train(formula, data = BD_APEX_SUM, method = "lm", trControl = train_
 
 # Exibir os resultados da validação cruzada
 print(model_cv)
-
-#Linear Regression 
-
-#335 samples
-#3 predictor
-
-#No pre-processing
-#Resampling: Cross-Validated (10 fold) 
-#Summary of sample sizes: 302, 301, 302, 303, 301, 302, ... 
-#Resampling results:
-
-#  RMSE      Rsquared   MAE     
-#2.304887  0.1465433  1.496761
-
-#Tuning parameter 'intercept' was held constant at a value of TRUE
-
-#Resultados da Validação Cruzada
-#RMSE (Root Mean Squared Error): 2.304887
-#R-squared: 0.1465433
-#MAE (Mean Absolute Error): 1.496761
-#Interpretação dos Resultados
-#RMSE:
-#  O RMSE mede o desvio padrão dos resíduos (diferença entre os valores observados e os valores previstos). Um RMSE de 2.304887 indica que, em média, as previsões do modelo estão a cerca de 2.3 unidades de log(TOTAL_MINUTOS) do valor real.
-#R-squared:
-#  O R-squared de 0.1465433 indica que aproximadamente 14.65% da variação nos valores de log(TOTAL_MINUTOS) é explicada pelo modelo. Este valor é relativamente baixo, sugerindo que o modelo não captura todas as variáveis relevantes ou que há uma alta variabilidade nos dados que não é explicada pelas variáveis preditoras incluídas.
-#MAE:
-#  O MAE mede a média dos erros absolutos entre as previsões e os valores reais. Um MAE de 1.496761 indica que, em média, as previsões do modelo estão a cerca de 1.5 unidades de log(TOTAL_MINUTOS) do valor real.
-
-
 
 ###############################################################################################
 
