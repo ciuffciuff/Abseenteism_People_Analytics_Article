@@ -117,11 +117,6 @@ plot.roc(rf_roc$rocs[[1]], main = "ROC Curve for Random Forest")
 ggplot(knn_model) + ggtitle("KNN performance with different k values")
 
 
-#Regressão Logística Multinomial - Accuracy:  0.9693878  Precisão Média:  0.9606663  Recall Médio:  0.9479458  F1-score Médio:  0.950623 
-#Árvores de Decisão - Accuracy:  0.5408163  Precisão Média:  0.5810458  Recall Médio:  0.3809524  F1-score Médio:  0.6830395 
-#Random Forest - Accuracy:  0.9591837  Precisão Média:  0.9634921  Recall Médio:  0.9404762  F1-score Médio:  0.9466502
-#KNN - Accuracy:  0.2244898  Precisão Média:  0.2870465  Recall Médio:  0.3401027  F1-score Médio:  0.3517396 
-
 # Finalizar paralelização
 stopCluster(cl)
 registerDoSEQ()
