@@ -14,23 +14,6 @@ library(caret)
 if ("package:dplyr" %in% search()) {
   detach("package:dplyr", unload = TRUE)
 }
-library(dplyr)
-
-# Read the data from the Excel file
-df <- read_excel("ATESTADOS_2019_2023.xlsx", sheet = "Sheet")
-
-# Check the structure of the data
-print(head(df))
-
-# Prepare the data for time series analysis
-df <- df %>%
-  mutate(START_DATE = as.Date(DATA_INICIO),
-         year_month = floor_date(START_DATE, "month")) %>%
-  group_by(year_month) %>%
-  summarise(total_minutes = sum(TOTAL_MINUTOS_ATESTADO, na.rm = TRUE))
-
-# Check the structure of the prepared data
-print(head(df))
 
 # Transform the data into a time series
 ts_data <- ts(df$total_minutes, start = c(2019, 1), frequency = 12)
